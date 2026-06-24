@@ -1,0 +1,24 @@
+name: My First DevOps Pipeline
+
+# 1. Указываем триггер: запускать конвейер при каждом пуше в ветку main
+on:
+  push:
+    branches: [ "main" ]
+
+# 2. Описываем сами шаги автоматизации
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest # Робот запустится на чистом сервере в облаке GitHub
+
+    steps:
+    # Шаг 1: Копируем код из вашего репозитория на сервер робота
+    - name: Checkout repository code
+      uses: actions/checkout@v4
+
+    # Шаг 2: Проверяем, что Docker работает на сервере GitHub
+    - name: Check Docker version
+      run: docker --version
+
+    # Шаг 3: Пробуем собрать ваш кастомный Docker-образ в облаке
+    - name: Test Build Docker Image
+      run: docker build -t test-nginx-image .
